@@ -1,4 +1,6 @@
 import Sidebar from "./components/Sidebar";
+import MainArea from "./components/MainArea";
+
 import "./App.css";
 
 const App = () => {
@@ -6,7 +8,7 @@ const App = () => {
     <div className="App" style={{ display: "flex" }}>
       <Sidebar />
       <main style={{ flexGrow: 1, padding: 16 }}>
-        <h1>Welcome to the Chart App</h1>
+        <MainArea />
       </main>
     </div>
   );

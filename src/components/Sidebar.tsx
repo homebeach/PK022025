@@ -3,15 +3,15 @@ import { Drawer, List, ListItem, ListItemText, IconButton, Menu, MenuItem, Butto
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
-import { addChart, updateChart, deleteChart } from "../store/chartSlice";
+import { addChart, updateChart, deleteChart, setSelectedChart } from "../store/chartSlice"; // Import setSelectedChart
 import ChartDialog from "./ChartDialog";
 
 const Sidebar: React.FC = () => {
   const charts = useSelector((state: RootState) => state.charts.charts);
+  const selectedChart = useSelector((state: RootState) => state.charts.selectedChart); // Get selectedChart from Redux
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedChart, setSelectedChart] = useState<any | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
@@ -24,7 +24,11 @@ const Sidebar: React.FC = () => {
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>, chart: any) => {
     setAnchorEl(event.currentTarget);
-    setSelectedChart(chart); // Set chart to be edited
+    dispatch(setSelectedChart(chart)); // Set selected chart when menu is opened
+  };
+
+  const handleChartClick = (chart: any) => {
+    dispatch(setSelectedChart(chart)); // Set selected chart when chart name is clicked
   };
 
   const handleMenuClose = () => {
@@ -37,8 +41,8 @@ const Sidebar: React.FC = () => {
   };
 
   const handleDelete = () => {
-    if (selectedChart) {
-      dispatch(deleteChart(selectedChart.id));
+    if (selectedChart && selectedChart.id !== undefined) {
+      dispatch(deleteChart(selectedChart.id)); // Only pass id if it's defined
     }
     handleMenuClose();
   };
@@ -51,7 +55,7 @@ const Sidebar: React.FC = () => {
     }
     setIsDialogOpen(false);
     setEditMode(false);
-    setSelectedChart(null);
+    dispatch(setSelectedChart(null)); // Reset selected chart in Redux
   };
 
   return (
@@ -74,6 +78,7 @@ const Sidebar: React.FC = () => {
           {charts.map((chart) => (
             <ListItem
               key={chart.id}
+              onClick={() => handleChartClick(chart)}
               secondaryAction={
                 <IconButton onClick={(event) => handleMenuOpen(event, chart)}>
                   <MoreVertIcon />

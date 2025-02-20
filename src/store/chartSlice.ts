@@ -1,22 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 interface Chart {
-  id: number;
+  id?: number;
   name: string;
   type: string;
   color: string;
-  dataseries: string;
+  dataseries: { value: number; date: string }[];
   xAxisName: string;
   yAxisName: string;
   description: string;
 }
-
 interface ChartState {
   charts: Chart[];
+  selectedChart: Chart | null; // Add selectedChart state
 }
 
 const initialState: ChartState = {
   charts: [],
+  selectedChart: null, // Initialize as null
 };
 
 const chartSlice = createSlice({
@@ -35,8 +35,11 @@ const chartSlice = createSlice({
         state.charts[index] = action.payload; // Replace the existing chart with the new data
       }
     },
+    setSelectedChart: (state, action: PayloadAction<Chart | null>) => {
+      state.selectedChart = action.payload; // Update selectedChart
+    },
   },
 });
 
-export const { addChart, deleteChart, updateChart } = chartSlice.actions;
+export const { addChart, deleteChart, updateChart, setSelectedChart } = chartSlice.actions; // Export setSelectedChart
 export default chartSlice.reducer;
