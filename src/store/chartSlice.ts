@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Chart {
-  id?: number;
+  id: number;
   name: string;
   type: string;
   color: string;
