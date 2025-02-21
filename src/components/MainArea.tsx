@@ -10,9 +10,10 @@ import { addChart, updateChart, setSelectedChart } from "../store/chartSlice";
 import ChartDialog from "./ChartDialog";
 
 const MainArea: React.FC = () => {
-  const { chartid } = useParams();
+  const { chartId } = useParams();
   const charts = useSelector((state: RootState) => state.charts.charts);
-  const selectedChart = charts.find(chart => chart.id.toString() === chartid);
+
+  const selectedChart = charts.find(chart => chart.id.toString() === chartId);
   const dispatch = useDispatch();
 
   const [editMode, setEditMode] = useState(false);
@@ -20,7 +21,7 @@ const MainArea: React.FC = () => {
 
   useEffect(() => {
     dispatch(setSelectedChart(selectedChart || null));
-  }, [chartid, dispatch, selectedChart]);
+  }, [chartId, dispatch, selectedChart]);
 
 
   const handleAddChart = () => {
