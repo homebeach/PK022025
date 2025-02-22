@@ -4,7 +4,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
-import { Button, Typography, Card, CardContent, Box, TextField } from "@mui/material";
+import { Button, Typography, Card, CardContent, Box } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { addChart, updateChart, setSelectedChart } from "../store/chartSlice";
