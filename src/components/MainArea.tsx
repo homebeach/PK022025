@@ -4,10 +4,12 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
-import { Button, Typography, Card, CardContent } from "@mui/material";
+import { Button, Typography, Card, CardContent, Box, TextField } from "@mui/material";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { addChart, updateChart, setSelectedChart } from "../store/chartSlice";
-
 import ChartDialog from "./ChartDialog";
+import { parseISO, format } from "date-fns";
 
 const MainArea: React.FC = () => {
   const { chartId } = useParams();
@@ -18,9 +20,15 @@ const MainArea: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
 
   useEffect(() => {
     dispatch(setSelectedChart(selectedChart || null));
+
+    if (selectedChart) {
+      const dates = selectedChart.dataseries.map((d: any) => parseISO(d.date));
+      setDateRange([new Date(Math.min(...dates.map(d => d.getTime()))), new Date(Math.max(...dates.map(d => d.getTime())))]);
+    }
   }, [chartId, dispatch, selectedChart]);
 
   const handleAddChart = () => {
@@ -62,7 +70,6 @@ const MainArea: React.FC = () => {
     );
   }
 
-  // 404 Handling: If a chart ID is provided but not found, show NotFound UI
   if (chartId && !selectedChart) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-white text-center p-6">
@@ -92,30 +99,49 @@ const MainArea: React.FC = () => {
     );
   }
 
+  const filteredData = selectedChart.dataseries.filter((data: any) => {
+    const dataDate = parseISO(data.date);
+    return (!dateRange[0] || dataDate >= dateRange[0]) && (!dateRange[1] || dataDate <= dateRange[1]);
+  });
+
   const options = {
-    title: {
-      text: selectedChart.name,
-    },
+    title: { text: selectedChart.name },
     xAxis: {
       title: { text: selectedChart.xAxisName },
-      categories: selectedChart.dataseries.map((data: any) => data.date),
+      categories: filteredData.map((data: any) => format(parseISO(data.date), "yyyy-MM-dd")),
     },
-    yAxis: {
-      title: { text: selectedChart.yAxisName },
-    },
+    yAxis: { title: { text: selectedChart.yAxisName } },
     series: [
       {
         name: selectedChart.name,
-        data: selectedChart.dataseries.map((data: any) => data.value),
+        data: filteredData.map((data: any) => data.value),
         type: selectedChart.type.toLowerCase(),
         color: selectedChart.color.toLowerCase(),
       },
     ],
   };
 
-  return (
+
+   return (
     <Card>
       <CardContent>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h6">{selectedChart.name}</Typography>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Box display="flex" gap={2}>
+              <DatePicker
+                label="From"
+                value={dateRange[0]}
+                onChange={(newValue) => setDateRange([newValue, dateRange[1]])}
+              />
+              <DatePicker
+                label="To"
+                value={dateRange[1]}
+                onChange={(newValue) => setDateRange([dateRange[0], newValue])}
+              />
+            </Box>
+          </LocalizationProvider>
+        </Box>
         <HighchartsReact highcharts={Highcharts} options={options} />
         <Typography variant="body1">{selectedChart.description}</Typography>
       </CardContent>
