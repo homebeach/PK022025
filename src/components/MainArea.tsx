@@ -147,7 +147,12 @@ const MainArea: React.FC = () => {
             </LocalizationProvider>
           </Box>
           <HighchartsReact highcharts={Highcharts} options={options} />
-          <Typography variant="body1">{selectedChart.description}</Typography>
+          <Typography
+            variant="body1"
+            style={{ textAlign: "center", display: "block", marginTop: "1rem" }}
+          >
+            {selectedChart.description}
+          </Typography>
         </CardContent>
       </Card>
     </div>
