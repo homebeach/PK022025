@@ -72,24 +72,27 @@ const MainArea: React.FC = () => {
 
   if (chartId && !selectedChart) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-white text-center p-6">
-        <Typography variant="h1" style={{ fontSize: "6rem", fontWeight: "bold", color: "#ccc" }}>
-          404
-        </Typography>
-        <Typography variant="h6" style={{ marginTop: "1rem", color: "#666" }}>
-          Chart not found. Please try again.
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ marginTop: "1rem" }}
-          onClick={() => navigate("/")}
-        >
-          Go Home
-        </Button>
+      <div className="MainArea">
+        <div style={{ textAlign: "center" }}>
+          <Typography variant="h1" style={{ fontSize: "6rem", fontWeight: "bold", color: "#ccc" }}>
+            404
+          </Typography>
+          <Typography variant="h6" style={{ marginTop: "1rem", color: "#666" }}>
+            Chart not found. Please try again.
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginTop: "1rem" }}
+            onClick={() => navigate("/")}
+          >
+            Go Home
+          </Button>
+        </div>
       </div>
     );
   }
+
 
   if (!selectedChart) {
     return (
@@ -122,30 +125,32 @@ const MainArea: React.FC = () => {
   };
 
 
-   return (
-    <Card>
-      <CardContent>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6">{selectedChart.name}</Typography>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Box display="flex" gap={2}>
-              <DatePicker
-                label="From"
-                value={dateRange[0]}
-                onChange={(newValue) => setDateRange([newValue, dateRange[1]])}
-              />
-              <DatePicker
-                label="To"
-                value={dateRange[1]}
-                onChange={(newValue) => setDateRange([dateRange[0], newValue])}
-              />
-            </Box>
-          </LocalizationProvider>
-        </Box>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-        <Typography variant="body1">{selectedChart.description}</Typography>
-      </CardContent>
-    </Card>
+  return (
+    <div className="MainArea">
+      <Card style={{ width: "100%", height: "100%" }}>
+        <CardContent>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6">{selectedChart.name}</Typography>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Box display="flex" gap={2}>
+                <DatePicker
+                  label="From"
+                  value={dateRange[0]}
+                  onChange={(newValue) => setDateRange([newValue, dateRange[1]])}
+                />
+                <DatePicker
+                  label="To"
+                  value={dateRange[1]}
+                  onChange={(newValue) => setDateRange([dateRange[0], newValue])}
+                />
+              </Box>
+            </LocalizationProvider>
+          </Box>
+          <HighchartsReact highcharts={Highcharts} options={options} />
+          <Typography variant="body1">{selectedChart.description}</Typography>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

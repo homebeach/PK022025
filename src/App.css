@@ -1,5 +1,26 @@
 .App {
-  text-align: center;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.Sidebar {
+  width: 250px;
+  /* Adjust as needed */
+  flex-shrink: 0;
+  /* Prevent Sidebar from shrinking */
+  height: 100vh;
+  overflow-y: auto;
+  /* Scroll if needed */
+}
+
+.MainArea {
+  flex-grow: 1;
+  padding: 16px;
+  overflow-x: auto;
+  /* Prevents chart from going under Sidebar */
+  /* margin-left: 250px;
+  Same as Sidebar width */
 }
 
 .App-logo {

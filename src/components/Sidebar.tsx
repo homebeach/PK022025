@@ -71,7 +71,7 @@ const Sidebar: React.FC = () => {
   );
 
   return (
-    <Drawer variant="permanent" anchor="left">
+    <Drawer variant="permanent" anchor="left" className="Sidebar">
       <div style={{ padding: 16, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <img src="/logoipsum-362.svg" alt="Logo" style={{ height: 40, marginBottom: 8 }} />
         <TextField

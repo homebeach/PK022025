@@ -6,9 +6,9 @@ import "./App.css";
 const App = () => {
   return (
     <Router>
-      <div className="App" style={{ display: "flex" }}>
+      <div className="App">
         <Sidebar />
-        <main style={{ flexGrow: 1, padding: 16 }}>
+        <main className="MainArea">
           <Routes>
             <Route path="/" element={<MainArea />} />
             <Route path="/:chartId" element={<MainArea />} />
