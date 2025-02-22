@@ -5,6 +5,7 @@ interface Chart {
   name: string;
   type: string;
   color: string;
+  dataseriesName: string;
   dataseries: { value: number; date: string }[];
   xAxisName: string;
   yAxisName: string;

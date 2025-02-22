@@ -17,6 +17,7 @@ interface Chart {
   name: string;
   type: string;
   color: string;
+  dataseriesName: string;
   dataseries: { value: number; date: string }[];
   xAxisName: string;
   yAxisName: string;
@@ -46,6 +47,7 @@ const ChartDialog: React.FC<ChartDialogProps> = ({
       name: "",
       type: "Line",
       color: "Black",
+      dataseriesName: "",
       dataseries: [],
       xAxisName: "Date",
       yAxisName: "Value",
@@ -66,14 +68,13 @@ const ChartDialog: React.FC<ChartDialogProps> = ({
   useEffect(() => {
     if (editMode && initialData) {
       reset(initialData);
-      setSelectedDataseriesName(
-        dataseriesList.find((ds) => ds.dataseries === initialData.dataseries)?.name || ""
-      );
+      setSelectedDataseriesName(initialData.dataseriesName || "");
     } else {
       reset({
         name: "",
         type: "Line",
         color: "Black",
+        dataseriesName: "",
         dataseries: [],
         xAxisName: "Date",
         yAxisName: "Value",
@@ -87,6 +88,7 @@ const ChartDialog: React.FC<ChartDialogProps> = ({
     if (selectedDataseriesName) {
       const selectedData = dataseriesList.find((ds) => ds.name === selectedDataseriesName);
       setValue("dataseries", selectedData?.dataseries || []);
+      setValue("dataseriesName", selectedDataseriesName);
       setValue("xAxisName", "Date");
       setValue("yAxisName", "Value");
     }

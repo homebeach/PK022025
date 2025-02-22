@@ -63,7 +63,7 @@ const Sidebar: React.FC = () => {
     setIsDialogOpen(false);
     setEditMode(false);
     dispatch(setSelectedChart(null));
-    navigate(`/${charts.length + 1}`);
+    navigate(`/`);
   };
 
   const filteredCharts = charts.filter(chart =>
