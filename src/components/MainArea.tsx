@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,8 +11,8 @@ import ChartDialog from "./ChartDialog";
 
 const MainArea: React.FC = () => {
   const { chartId } = useParams();
+  const navigate = useNavigate();
   const charts = useSelector((state: RootState) => state.charts.charts);
-
   const selectedChart = charts.find(chart => chart.id.toString() === chartId);
   const dispatch = useDispatch();
 
@@ -22,7 +22,6 @@ const MainArea: React.FC = () => {
   useEffect(() => {
     dispatch(setSelectedChart(selectedChart || null));
   }, [chartId, dispatch, selectedChart]);
-
 
   const handleAddChart = () => {
     dispatch(setSelectedChart(null));
@@ -59,6 +58,28 @@ const MainArea: React.FC = () => {
           editMode={false}
           initialData={null}
         />
+      </div>
+    );
+  }
+
+  // 404 Handling: If a chart ID is provided but not found, show NotFound UI
+  if (chartId && !selectedChart) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-white text-center p-6">
+        <Typography variant="h1" style={{ fontSize: "6rem", fontWeight: "bold", color: "#ccc" }}>
+          404
+        </Typography>
+        <Typography variant="h6" style={{ marginTop: "1rem", color: "#666" }}>
+          Chart not found. Please try again.
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: "1rem" }}
+          onClick={() => navigate("/")}
+        >
+          Go Home
+        </Button>
       </div>
     );
   }
